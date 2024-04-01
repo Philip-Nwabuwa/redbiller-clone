@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { Lock } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -11,50 +12,67 @@ import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMsg } from "@/components/common/ErrorLable";
 import { Input } from "@/components/ui/input";
+import { useAuthStore } from "@/store/useAuthStore";
+import { toast } from "sonner";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
-  email: z.string(),
-  password: z.string().min(8),
+  email: z.string().min(1, { message: "Email is required" }),
+  password: z
+    .string()
+    .min(8, { message: "Password must be at least 8 characters" }),
 });
 
 type FormField = z.infer<typeof schema>;
 
 const Login = () => {
+  const router = useRouter();
+  const { isLoggedIn, setIsLoggedIn } = useAuthStore();
+
+  console.log(isLoggedIn);
+
+  if (isLoggedIn) {
+    router.push("/dashboard");
+  }
+
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors, isSubmitting },
   } = useForm<FormField>({
     resolver: zodResolver(schema),
   });
+
   const onSubmit: SubmitHandler<FormField> = async (data) => {
     try {
-      await new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      });
+      if (data.email === "admin@email.com" && data.password === "@Admin123") {
+        setIsLoggedIn(true);
+        toast.success("Logged in successfully");
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 1000);
+      } else {
+        toast.error("Invalid email or password");
+      }
       console.log(data);
     } catch (error) {
-      setError("root", {
-        message: "Invalid email or password",
-      });
       console.log(error);
     }
   };
-  console.log(errors);
   return (
     <div className="w-full lg:grid lg:grid-cols-2 h-screen">
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-10 mb-4 text-center">
             <h1 className="text-3xl font-bold">Login</h1>
-            <p className="text-balance text-muted-foreground flex flex-col justify-center items-center gap-2 ">
-              Kindly confirm that you're on{" "}
-              <span className="w-fit text-sm px-[26px] py-[6.5px] bg-[#f5f5f5] rounded-[20px]">
+            <div className="text-balance text-muted-foreground flex flex-col justify-center items-center gap-2 ">
+              Kindly confirm that you&apos;re on{" "}
+              <p className="w-fit flex items-center gap-2 text-sm px-[26px] py-[6.5px] text-black bg-[#f5f5f5] rounded-[20px]">
+                <Lock className="text-[#1bc4bd] size-[24px]" />{" "}
                 https://app.redbiller.com
-              </span>
-            </p>
+              </p>
+            </div>
           </div>
           <form onSubmit={handleSubmit(onSubmit)} className="grid gap-8">
             <div className="grid gap-2">
@@ -88,13 +106,13 @@ const Login = () => {
             <Button disabled={isSubmitting} type="submit" className="w-full">
               {isSubmitting ? "Logging in..." : "Login"}
             </Button>
+            <ThemeToggle />
           </form>
           <div className="mt-4 text-center text-sm">
             Not a Member yet?{" "}
             <Link href="/signup" className="underline text-[#3b82f6]">
               Create account
             </Link>
-            <ThemeToggle />
           </div>
         </div>
       </div>
