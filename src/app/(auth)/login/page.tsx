@@ -16,6 +16,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { toast } from "sonner";
 import { ThemeToggle } from "@/components/common/ThemeToggle";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 const schema = z.object({
   email: z.string().min(1, { message: "Email is required" }),
@@ -32,9 +33,11 @@ const Login = () => {
 
   console.log(isLoggedIn);
 
-  if (isLoggedIn) {
-    router.push("/dashboard");
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      router.push("/dashboard");
+    }
+  }, [isLoggedIn]);
 
   const {
     register,
