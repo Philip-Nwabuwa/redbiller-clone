@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Dashboard = () => {
   const router = useRouter();
 
   const { isLoggedIn, logout } = useAuthStore();
@@ -16,9 +16,11 @@ const page = () => {
   return (
     <div>
       {" "}
-      <button onClick={logout}>Logout</button>
+      <Button variant={"ghost"} onClick={logout}>
+        Logout
+      </Button>
     </div>
   );
 };
 
-export default page;
+export default Dashboard;
