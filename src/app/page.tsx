@@ -8,7 +8,7 @@ import { useEffect } from "react";
 export default function Home() {
   const router = useRouter();
 
-  const { isLoggedIn, logout } = useAuthStore();
+  const { isLoggedIn } = useAuthStore();
 
   useEffect(() => {
     if (!isLoggedIn) {
