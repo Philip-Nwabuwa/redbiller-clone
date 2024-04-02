@@ -176,26 +176,28 @@ const FormStep2 = ({
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-8">
         <div className="grid gap-2">
           <Label className="sr-only">OTP</Label>
-          <InputOTP
-            maxLength={6}
-            {...register("pin")}
-            onChange={handleOTPChange}
-          >
-            <InputOTPGroup>
-              <InputOTPSlot index={0} />
-              <InputOTPSlot index={1} />
-            </InputOTPGroup>
-            <InputOTPSeparator />
-            <InputOTPGroup>
-              <InputOTPSlot index={2} />
-              <InputOTPSlot index={3} />
-            </InputOTPGroup>
-            <InputOTPSeparator />
-            <InputOTPGroup>
-              <InputOTPSlot index={4} />
-              <InputOTPSlot index={5} />
-            </InputOTPGroup>
-          </InputOTP>
+          <div className="w-full flex items-center justify-center">
+            <InputOTP
+              maxLength={6}
+              {...register("pin")}
+              onChange={handleOTPChange}
+            >
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+              </InputOTPGroup>
+              <InputOTPSeparator />
+              <InputOTPGroup>
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
           {errors.pin && <ErrorMsg>{errors.pin.message}</ErrorMsg>}
         </div>
 
