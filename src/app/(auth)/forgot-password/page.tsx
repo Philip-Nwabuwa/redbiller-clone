@@ -98,7 +98,7 @@ const FormStep1 = ({
   const onSubmit: SubmitHandler<EmailField> = async (data) => {
     try {
       setEmail(data.email);
-      toast.success(`Email sent to ${data.email} successfully`);
+      toast.success(`OTP sent to ${data.email} successfully`);
       next();
     } catch (error) {
       console.log(error);
